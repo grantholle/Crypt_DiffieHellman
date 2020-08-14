@@ -1,6 +1,6 @@
 {
-    "name": "pear/crypt_diffiehellman",
-    "description": "Implementation of Diffie-Hellman Key Exchange cryptographic protocol for PHP5",
+    "name": "grantholle/pear-crypt-diffiehellman",
+    "description": "A port of Pear's implementation of Diffie-Hellman Key Exchange cryptographic protocol for PHP5",
     "license": "BSD-2-Clause",
     "support": {
         "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Crypt_DiffieHellman",
@@ -17,6 +17,10 @@
             "email": "padraic@php.net",
             "name": "P\u00e1draic Brady",
             "role": "Lead"
+        },
+        {
+            "name": "Grant Holle",
+            "homepage": "https://grantholle.com"
         }
     ],
     "autoload": {
