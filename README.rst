@@ -1,8 +1,10 @@
 *******************
-Crypt_DiffieHellman
+DiffieHellman
 *******************
-Implementation of the Diffie-Hellman Key Exchange cryptographic protocol
-in PHP5.
+
+This is a port of [Pear's Crypt_DiffieHellman](https://github.com/pear/Crypt_DiffieHellman) that adds psr-4 compliance.
+
+Implementation of the Diffie-Hellman Key Exchange cryptographic protocol.
 
 Enables two parties without any prior knowledge of each other establish
 a secure shared secret key across an insecure channel of communication.
@@ -11,31 +13,9 @@ a secure shared secret key across an insecure channel of communication.
 Installation
 ============
 
-PEAR
-====
-::
-
-    $ pear install crypt_diffiehellman-alpha
-
-
 Composer
 ========
 ::
 
-    $ composer require pear/crypt_diffiehellman
+    $ composer require grantholle/pear-crypt-diffiehellman
 
-
-=====
-Links
-=====
-Homepage
-  http://pear.php.net/package/Crypt_DiffieHellman
-Bug tracker
-  http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Crypt_DiffieHellman
-Unit test status
-  https://travis-ci.org/pear/Crypt_DiffieHellman
-
-  .. image:: https://travis-ci.org/pear/Crypt_DiffieHellman.svg?branch=master
-     :target: https://travis-ci.org/pear/Crypt_DiffieHellman
-Packagist
-  https://packagist.org/packages/pear/crypt_diffiehellman

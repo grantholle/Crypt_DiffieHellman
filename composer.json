@@ -3,8 +3,8 @@
     "description": "A port of Pear's implementation of Diffie-Hellman Key Exchange cryptographic protocol for PHP5",
     "license": "BSD-2-Clause",
     "support": {
-        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Crypt_DiffieHellman",
-        "source": "https://github.com/pear/Crypt_DiffieHellman"
+        "issues": "https://github.com/grantholle/pear-crypt-diffiehellman/issues",
+        "source": "https://github.com/grantholle/pear-crypt-diffiehellman"
     },
     "type": "library",
     "authors": [
