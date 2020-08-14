@@ -1,4 +1,9 @@
 <?php
+
+namespace Pear\Crypt\DiffieHellman;
+
+use Pear\Crypt\DiffieHellman\Math\BigInteger;
+
 /**
  * Math extension wrapper for DiffieHellman with some additional helper
  * methods for RNG and binary conversion.
@@ -6,7 +11,7 @@
  * PHP version 5
  *
  * LICENSE:
- * 
+ *
  * Copyright (c) 2005-2007, Pádraic Brady <padraic.brady@yahoo.com>
  * All rights reserved.
  *
@@ -17,9 +22,9 @@
  *    * Redistributions of source code must retain the above copyright
  *      notice, this list of conditions and the following disclaimer.
  *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the 
+ *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *    * The name of the author may not be used to endorse or promote products 
+ *    * The name of the author may not be used to endorse or promote products
  *      derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
@@ -42,9 +47,6 @@
  * @link        http://
  */
 
-/** Crypt_DiffieHellman_Math_BigInteger */
-require_once 'Crypt/DiffieHellman/Math/BigInteger.php';
-
 /**
  * Crypt_DiffieHellman_Math class
  *
@@ -55,7 +57,7 @@ require_once 'Crypt/DiffieHellman/Math/BigInteger.php';
  *
  *      $math = new Crypt_DiffieHellman_Math('gmp');
  *      $randomNumber = $math->rand(2, '384834813984910010746469093412498181642341794');
- * 
+ *
  * @category   Encryption
  * @package    Crypt_DiffieHellman
  * @author     Pádraic Brady <padraic.brady@yahoo.com>
@@ -65,7 +67,7 @@ require_once 'Crypt/DiffieHellman/Math/BigInteger.php';
  * @version    @package_version@
  * @access     public
  */
-class Crypt_DiffieHellman_Math extends Crypt_DiffieHellman_Math_BigInteger
+class Math extends BigInteger
 {
 
     /**

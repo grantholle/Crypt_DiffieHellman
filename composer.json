@@ -20,17 +20,17 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Crypt": "./"
+        "psr-4": {
+            "Pear\\Crypt\\": "Crypt"
         }
     },
-    "include-path": [
-        "./"
-    ],
     "suggest": {
         "ext-gmp": "May require the gmp PHP extension"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7"
+        "phpunit/phpunit": "^8"
+    },
+    "require": {
+        "php": "^7.2"
     }
 }

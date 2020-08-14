@@ -1,4 +1,7 @@
 <?php
+
+namespace Pear\Crypt\DiffieHellman\Math\BigInteger;
+
 /**
  * Zend Framework
  *
@@ -35,9 +38,8 @@
  * @author     Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Crypt_DiffieHellman_Math_BigInteger_Interface
+interface BigIntegerInterface
 {
-
     public function init($operand, $base = 10);
     public function add($left_operand, $right_operand);
     public function subtract($left_operand, $right_operand);

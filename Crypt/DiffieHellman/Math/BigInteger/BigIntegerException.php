@@ -1,11 +1,16 @@
 <?php
+
+namespace Pear\Crypt\DiffieHellman\Math\BigInteger;
+
+use Pear\Crypt\DiffieHellman\Math\DiffieHellmanMathException;
+
 /**
  * Exception subclass of PEAR_Exception for Crypt_DiffieHellman.
  *
  * PHP version 5
  *
  * LICENSE:
- * 
+ *
  * Copyright (c) 2005-2007, Pádraic Brady <padraic.brady@yahoo.com>
  * All rights reserved.
  *
@@ -16,9 +21,9 @@
  *    * Redistributions of source code must retain the above copyright
  *      notice, this list of conditions and the following disclaimer.
  *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the 
+ *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *    * The name of the author may not be used to endorse or promote products 
+ *    * The name of the author may not be used to endorse or promote products
  *      derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
@@ -42,12 +47,7 @@
  */
 
 /**
- * Crypt_DiffieHellman_Exception
- */
-require_once 'Crypt/DiffieHellman/Exception.php';
-
-/**
- * Crypt_DiffieHellman_Exception
+ * Crypt_DiffieHellman_Math_BigInteger_Exception
  *
  * @category   Encryption
  * @package    Crypt_DiffieHellman
@@ -58,5 +58,5 @@ require_once 'Crypt/DiffieHellman/Exception.php';
  * @version    @package_version@
  * @access     public
  */
-class Crypt_DiffieHellman_Math_Exception extends Crypt_DiffieHellman_Exception
+class BigIntegerException extends DiffieHellmanMathException
 {}

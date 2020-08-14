@@ -6,7 +6,7 @@
 >
  <filter>
   <whitelist>
-   <directory suffix=".php">../Crypt/</directory>
+   <directory suffix=".php">./Crypt</directory>
   </whitelist>
  </filter>
 </phpunit>

@@ -1,4 +1,7 @@
 <?php
+
+namespace Pear\Crypt\DiffieHellman\Math\BigInteger;
+
 /**
  * Math extension wrapper for DiffieHellman with some additional helper
  * methods for RNG and binary conversion.
@@ -6,7 +9,7 @@
  * PHP version 5
  *
  * LICENSE:
- * 
+ *
  * Copyright (c) 2005-2007, Pádraic Brady <padraic.brady@yahoo.com>
  * All rights reserved.
  *
@@ -17,9 +20,9 @@
  *    * Redistributions of source code must retain the above copyright
  *      notice, this list of conditions and the following disclaimer.
  *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the 
+ *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *    * The name of the author may not be used to endorse or promote products 
+ *    * The name of the author may not be used to endorse or promote products
  *      derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
@@ -42,9 +45,6 @@
  * @link        http://
  */
 
-/** Crypt_DiffieHellman_Math_BigInteger_Interface */
-require_once 'Crypt/DiffieHellman/Math/BigInteger/Interface.php';
-
 /**
  * Support for arbitrary precision mathematics in PHP.
  *
@@ -56,7 +56,7 @@ require_once 'Crypt/DiffieHellman/Math/BigInteger/Interface.php';
  * @author     Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Crypt_DiffieHellman_Math_BigInteger_Gmp implements Crypt_DiffieHellman_Math_BigInteger_Interface
+class Gmp implements BigIntegerInterface
 {
 
     /**
@@ -120,7 +120,7 @@ class Crypt_DiffieHellman_Math_BigInteger_Gmp implements Crypt_DiffieHellman_Mat
 
     /**
      * @param string $left_operand
-     * @param string $right_operand
+     * @param $modulus
      * @return string
      */
     public function modulus($left_operand, $modulus)
@@ -151,6 +151,7 @@ class Crypt_DiffieHellman_Math_BigInteger_Gmp implements Crypt_DiffieHellman_Mat
     /**
      * @param string $left_operand
      * @param string $right_operand
+     * @param $modulus
      * @return string
      */
     public function powmod($left_operand, $right_operand, $modulus)
@@ -159,8 +160,7 @@ class Crypt_DiffieHellman_Math_BigInteger_Gmp implements Crypt_DiffieHellman_Mat
     }
 
     /**
-     * @param string $left_operand
-     * @param string $right_operand
+     * @param $operand
      * @return string
      */
     public function sqrt($operand)

@@ -1,4 +1,10 @@
 <?php
+
+namespace Pear\Crypt;
+
+use Pear\Crypt\DiffieHellman\DiffieHellmanException;
+use Pear\Crypt\DiffieHellman\Math;
+
 /**
  * Implementation of the Diffie-Hellman Key Exchange cryptographic protocol
  * in PHP5. Enables two parties without any prior knowledge each other
@@ -8,7 +14,7 @@
  * PHP version 5
  *
  * LICENSE:
- * 
+ *
  * Copyright (c) 2005-2007 Pádraic Brady <padraic.brady@yahoo.com>
  * All rights reserved.
  *
@@ -19,9 +25,9 @@
  *    * Redistributions of source code must retain the above copyright
  *      notice, this list of conditions and the following disclaimer.
  *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the 
+ *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *    * The name of the author may not be used to endorse or promote products 
+ *    * The name of the author may not be used to endorse or promote products
  *      derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
@@ -37,18 +43,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @category    Crypt
- * @package     Crypt_DiffieHellman
+ * @package     DiffieHellman
  * @author      Pádraic Brady <padraic.brady@yahoo.com>
  * @license     http://opensource.org/licenses/bsd-license.php New BSD License
  * @version     $Id$
  * @link        http://
  */
 
-/** Crypt_DiffieHellman_Math */
-require_once 'Crypt/DiffieHellman/Math.php';
-
 /**
- * Crypt_DiffieHellman class
  *
  * Example usage:
  *      Bob and Alice have started to communicate and wish to establish a
@@ -75,16 +77,16 @@ require_once 'Crypt/DiffieHellman/Math.php';
  *             generator = 5
  *             private key = 9
  *      Bob:   prime = 563
- *             generator = 5 
+ *             generator = 5
  *             private key = 14
- *      
- *      $alice = new Crypt_DiffieHellman(563, 5, 9);
+ *
+ *      $alice = new DiffieHellman(563, 5, 9);
  *      $alice_pubKey = alice->generateKeys()->getPublicKey();
- *      $bob = new Crypt_DiffieHellman(563, 5, 14);
+ *      $bob = new DiffieHellman(563, 5, 14);
  *      $bob_pubKey = $bob->generateKeys()->getPublicKey();
  *
  *      // the public keys are then exchanged (with agreed prime and generator)
- *      
+ *
  *      $alice_computeKey = $alice->computeSecretKey($bob_pubKey)->getSharedSecretKey();
  *      $bob_computeKey = $bob->computeSecretKey($alice_pubKey)->getSharedSecretKey();
  *
@@ -96,9 +98,9 @@ require_once 'Crypt/DiffieHellman/Math.php';
  *
  *      In order to facilitate the practice of transmitting large integers in
  *      their binary form, input and output methods may accept an additional
- *      parameter of Crypt_DiffieHellman::BINARY to tell this method when the
+ *      parameter of DiffieHellman::BINARY to tell this method when the
  *      input/output should be converted from, or to, binary form. An alternate
- *      parameter of Crypt_DiffieHellman::BTWOC is used only for output methods
+ *      parameter of DiffieHellman::BTWOC is used only for output methods
  *      and returns the binary big-endian twos complement of the binary form to
  *      maintain consistent binary conversion across platforms.
  *
@@ -106,10 +108,10 @@ require_once 'Crypt/DiffieHellman/Math.php';
  *      to always use a sufficiently large prime, preferably one of the primes
  *      deemed to have positive cryptographic qualities. The generator is
  *      always a number less than the prime number.
- *      
- * 
+ *
+ *
  * @category   Encryption
- * @package    Crypt_DiffieHellman
+ * @package    DiffieHellman
  * @author     Pádraic Brady <padraic.brady@yahoo.com>
  * @copyright  2005-2007 Pádraic Brady
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
@@ -117,11 +119,11 @@ require_once 'Crypt/DiffieHellman/Math.php';
  * @version    @package_version@
  * @access     public
  */
-class Crypt_DiffieHellman
+class DiffieHellman
 {
 
     /**
-     * Default large prime number; required by the algorithm. 
+     * Default large prime number; required by the algorithm.
      *
      * @var string
      */
@@ -148,7 +150,7 @@ class Crypt_DiffieHellman
      * use /dev/urandom or a less cryptographically secure algorithm if a
      * system based RNG cannot be found.
      *
-     * @var Crypt_DiffieHellman_Math
+     * @var Math
      */
     private $_math = null;
 
@@ -182,9 +184,10 @@ class Crypt_DiffieHellman
      *
      * @param string|integer $prime
      * @param string|integer $generator
-     * @param string|integer $privateKey
-     * @param string $privateKeyType
-     * @param string $mathExtension
+     * @param string|integer|null $privateKey
+     * @param string|null $privateKeyType
+     * @param string|null $mathExtension
+     * @throws DiffieHellmanException
      */
     public function __construct($prime, $generator, $privateKey = null, $privateKeyType = null, $mathExtension = null)
     {
@@ -203,11 +206,13 @@ class Crypt_DiffieHellman
      * Generate own public key. If a private number has not already been
      * set, one will be generated at this stage.
      *
-     * @return Crypt_DiffieHellman
+     * @return DiffieHellman
+     * @throws DiffieHellmanException
      */
     public function generateKeys()
     {
         $this->_publicKey = $this->_math->powmod($this->getGenerator(), $this->getPrivateKey(), $this->getPrime());
+
         return $this;
     }
 
@@ -217,18 +222,20 @@ class Crypt_DiffieHellman
      *
      * @param string $type
      * @return string
+     * @throws DiffieHellmanException
      */
     public function getPublicKey($type = self::NUMBER)
     {
         if (is_null($this->_publicKey)) {
-            require_once 'Crypt/DiffieHellman/Exception.php';
-            throw new Crypt_DiffieHellman_Exception('A public key has not yet been generated using a prior call to generateKeys()');
+            throw new DiffieHellmanException('A public key has not yet been generated using a prior call to generateKeys()');
         }
+
         if ($type == self::BINARY) {
             return $this->_math->toBinary($this->_publicKey);
         } elseif ($type == self::BTWOC) {
             return $this->_math->btwoc($this->_math->toBinary($this->_publicKey));
         }
+
         return $this->_publicKey;
     }
 
@@ -242,18 +249,21 @@ class Crypt_DiffieHellman
      *
      * @param string $publicKey
      * @param string $type
-     * @return void
+     * @return DiffieHellman
+     * @throws DiffieHellmanException
      */
     public function computeSecretKey($publicKey, $type = self::NUMBER)
     {
         if ($type == self::BINARY) {
             $publicKey = $this->_math->fromBinary($publicKey);
         }
+
         if (!preg_match("/^\d+$/", $publicKey)) {
-            require_once('Crypt/DiffieHellman/Exception.php');
-            throw new Crypt_DiffieHellman_Exception('invalid parameter; not a positive natural number');
+            throw new DiffieHellmanException('invalid parameter; not a positive natural number');
         }
+
         $this->_secretKey = $this->_math->powmod($publicKey, $this->getPrivateKey(), $this->getPrime());
+
         return $this;
     }
 
@@ -262,18 +272,20 @@ class Crypt_DiffieHellman
      *
      * @param string $type
      * @return string
+     * @throws DiffieHellmanException
      */
     public function getSharedSecretKey($type = self::NUMBER)
     {
         if (!isset($this->_secretKey)) {
-            require_once('Crypt/DiffieHellman/Exception.php');
-            throw new Crypt_DiffieHellman_Exception('A secret key has not yet been computed; call computeSecretKey()');
+            throw new DiffieHellmanException('A secret key has not yet been computed; call computeSecretKey()');
         }
+
         if ($type == self::BINARY) {
             return $this->_math->toBinary($this->_secretKey);
         } elseif ($type == self::BTWOC) {
             return $this->_math->btwoc($this->_math->toBinary($this->_secretKey));
         }
+
         return $this->_secretKey;
     }
 
@@ -281,13 +293,13 @@ class Crypt_DiffieHellman
      * Setter for the value of the prime number
      *
      * @param string $number
-     * @return Crypt_DiffieHellman
+     * @return DiffieHellman
+     * @throws DiffieHellmanException
      */
     public function setPrime($number)
     {
         if (!preg_match("/^\d+$/", $number) || $number < 11) {
-            require_once('Crypt/DiffieHellman/Exception.php');
-            throw new Crypt_DiffieHellman_Exception('invalid parameter; not a positive natural number or too small: should be a large natural number prime');
+            throw new DiffieHellmanException('invalid parameter; not a positive natural number or too small: should be a large natural number prime');
         }
         $this->_prime = (string) $number;
         return $this;
@@ -298,12 +310,12 @@ class Crypt_DiffieHellman
      *
      * @param string $type
      * @return string
+     * @throws DiffieHellmanException
      */
     public function getPrime($type = self::NUMBER)
     {
         if (!isset($this->_prime)) {
-            require_once('Crypt/DiffieHellman/Exception.php');
-            throw new Crypt_DiffieHellman_Exception('No prime number has been set');
+            throw new DiffieHellmanException('No prime number has been set');
         }
 
         if ($type == self::NUMBER) {
@@ -319,13 +331,13 @@ class Crypt_DiffieHellman
      * Setter for the value of the generator number
      *
      * @param string $number
-     * @return Crypt_DiffieHellman
+     * @return DiffieHellman
+     * @throws DiffieHellmanException
      */
     public function setGenerator($number)
     {
         if (!preg_match("/^\d+$/", $number) || $number < 2) {
-            require_once('Crypt/DiffieHellman/Exception.php');
-            throw new Crypt_DiffieHellman_Exception('invalid parameter; not a positive natural number greater than 1');
+            throw new DiffieHellmanException('invalid parameter; not a positive natural number greater than 1');
         }
         $this->_generator = (string) $number;
         return $this;
@@ -336,12 +348,12 @@ class Crypt_DiffieHellman
      *
      * @param string $type
      * @return string
+     * @throws DiffieHellmanException
      */
     public function getGenerator($type = self::NUMBER)
     {
         if (!isset($this->_generator)) {
-            require_once('Crypt/DiffieHellman/Exception.php');
-            throw new Crypt_DiffieHellman_Exception('No generator number has been set');
+            throw new DiffieHellmanException('No generator number has been set');
         }
         if ($type == self::NUMBER) {
             return $this->_generator;
@@ -356,7 +368,8 @@ class Crypt_DiffieHellman
      *
      * @param string|integer $number
      * @param string $type
-     * @return Crypt_DiffieHellman
+     * @return DiffieHellman
+     * @throws DiffieHellmanException
      */
     public function setPrivateKey($number, $type = self::NUMBER)
     {
@@ -364,8 +377,7 @@ class Crypt_DiffieHellman
             $number = $this->_math->fromBinary($number);
         }
         if (!preg_match("/^\d+$/", $number)) {
-            require_once('Crypt/DiffieHellman/Exception.php');
-            throw new Crypt_DiffieHellman_Exception('invalid parameter; not a positive natural number');
+            throw new DiffieHellmanException('invalid parameter; not a positive natural number');
         }
         $this->_privateKey = (string) $number;
         return $this;
@@ -376,17 +388,20 @@ class Crypt_DiffieHellman
      *
      * @param string $type
      * @return string
+     * @throws DiffieHellmanException
      */
     public function getPrivateKey($type = self::NUMBER)
     {
         if (!isset($this->_privateKey)) {
             $this->setPrivateKey($this->_generatePrivateKey(), self::BINARY);
         }
+
         if ($type == self::BINARY) {
             return $this->_math->toBinary($this->_privateKey);
         } elseif ($type == self::BTWOC) {
             return $this->_math->btwoc($this->_math->toBinary($this->_privateKey));
         }
+
         return $this->_privateKey;
     }
 
@@ -397,15 +412,16 @@ class Crypt_DiffieHellman
      * problem or bug.
      *
      * Due to the temporary nature of BigInteger wrapper, this decision
-     * is deferred to Crypt_DiffieHellman_Math which extends (in a
-     * slightly reversed way) Crypt_DiffieHellman_Math_BigInteger.
+     * is deferred to Math which extends (in a
+     * slightly reversed way) Math_BigInteger.
      *
-     * @param string $extension
+     * @param string|null $extension
      * @return void
+     * @throws Math\BigInteger\BigIntegerException
      */
     public function setBigIntegerMath($extension = null)
     {
-        $this->_math = new Crypt_DiffieHellman_Math($extension);
+        $this->_math = new Math($extension);
     }
 
     /**
@@ -413,11 +429,11 @@ class Crypt_DiffieHellman
      * generate one at random.
      *
      * @return string
+     * @throws DiffieHellmanException
      */
     protected function _generatePrivateKey()
     {
-        $rand = $this->_math->rand($this->getGenerator(), $this->getPrime());
-        return $rand;
+        return $this->_math->rand($this->getGenerator(), $this->getPrime());
     }
 
 }
